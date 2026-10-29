@@ -1,4 +1,5 @@
 
+# Third-party libraries used by the analysis functions.
 from urlextract import URLExtract
 from wordcloud import WordCloud
 import pandas as pd
@@ -9,8 +10,10 @@ import seaborn as sns
 
 
 
+# Reusable URL extractor for link statistics.
 extract = URLExtract()
 
+# Return message, word, media, and link totals for the selected participant.
 def fetch_stats(selected_user,df):
 
     if selected_user != 'Overall':
@@ -35,6 +38,7 @@ def fetch_stats(selected_user,df):
     return num_messages,len(words),num_media_messages,len(links)
 
 
+# Build daily message counts for the timeline chart.
 def daily_timeline(selected_user,df):
 
     if selected_user != 'Overall':
@@ -47,6 +51,7 @@ def daily_timeline(selected_user,df):
 
 
 
+# Build monthly message counts and readable month labels.
 def monthly_timeline(selected_user,df):
 
     if selected_user != 'Overall':
@@ -73,6 +78,7 @@ def monthly_timeline(selected_user,df):
 
 
 
+# Count messages by day of the week.
 def week_activity_map(selected_user,df):
 
     if selected_user != 'Overall':
@@ -86,6 +92,7 @@ def week_activity_map(selected_user,df):
 
 
 
+# Count messages by calendar month.
 def month_activity_map(selected_user,df):
 
     if selected_user != 'Overall':
@@ -93,6 +100,7 @@ def month_activity_map(selected_user,df):
 
     return df['month'].value_counts()
 
+# Create a day-by-hour table with all 24 time slots included.
 def activity_heatmap(selected_user,df):
 
     if selected_user != 'Overall':
@@ -134,6 +142,7 @@ def activity_heatmap(selected_user,df):
 
 
 
+# Return the busiest participants and their percentage share.
 def most_busy_users(df):
     x = df['users'].value_counts().head()
     df = round((df['users'].value_counts() / df.shape[0]) * 100, 2).reset_index().rename(
@@ -141,6 +150,7 @@ def most_busy_users(df):
     return x,df
 
 
+# Generate a wordcloud after removing the configured stop words.
 def create_wordcloud(selected_user,df):
     f = open('stop_hinglish.txt', 'r')
     stop_words = f.read()
@@ -167,6 +177,7 @@ def create_wordcloud(selected_user,df):
     return df_wc
 
 
+# Return the twenty most frequently used non-stop words.
 def most_common_words(selected_user,df):
 
     f = open('stop_hinglish.txt','r')
@@ -189,6 +200,7 @@ def most_common_words(selected_user,df):
     return most_common_df
 
 
+# Count emoji characters used by the selected participant or whole chat.
 def emoji_helper(selected_user,df):
     if selected_user != 'Overall':
         df = df[df['users'] == selected_user]

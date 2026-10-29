@@ -1,3 +1,4 @@
+# Standard library and visualization imports.
 import zipfile
 import streamlit as st
 import preprocessor,helper
@@ -6,12 +7,14 @@ import matplotlib.dates as mdates
 import seaborn as sns
 
 
+# Configure the browser page before rendering any Streamlit elements.
 st.set_page_config(
     page_title="WhatsApp Chat Analyzer",
     page_icon="💬",
     layout="wide"
 )
 
+# Global styles for the dashboard, cards, banners, and footer.
 st.markdown("""
 <style>
     .stApp {
@@ -121,6 +124,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+# Main dashboard hero section.
 st.markdown(
     """
     <div class="hero">
@@ -131,6 +135,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+# Privacy notice shown before the upload control.
 st.markdown(
     """
     <div class="privacy-banner">
@@ -141,6 +146,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+# File upload area. Both direct text exports and ZIP exports are supported.
 with st.container(border=True):
     st.markdown('<div class="start-analysis-title">Start Your Analysis</div>', unsafe_allow_html=True)
     uploaded_file = st.file_uploader(
@@ -148,6 +154,7 @@ with st.container(border=True):
         type=['txt', 'zip']
     )
 
+# Explain how to export a chat when no file has been selected yet.
 if uploaded_file is None:
     st.info("Upload a WhatsApp chat ZIP or TXT file.")
 
@@ -171,6 +178,7 @@ if uploaded_file is None:
             """
         )
 else:
+    # Read the uploaded text directly or locate the first text file in a ZIP.
     if uploaded_file.name.lower().endswith('.zip'):
         with zipfile.ZipFile(uploaded_file) as archive:
             text_files = [
@@ -192,6 +200,7 @@ else:
             errors='replace'
         )
 
+    # Parse the uploaded export into an analysis DataFrame.
     df = preprocessor.preprocess(data)
     df = preprocessor.preprocess(data)
 
@@ -199,6 +208,7 @@ else:
     user_list.sort()
     user_list.insert(0, "Overall")
 
+    # Keep participant selection and the analysis action together.
     control_col, button_col = st.columns([3, 1])
     with control_col:
         selected_user = st.selectbox("Analyze messages from", user_list)
@@ -208,6 +218,7 @@ else:
         show_analysis = st.button("✨ Show Analysis", use_container_width=True)
 
     if show_analysis:
+        # Render the complete analysis as one continuous notebook-style page.
         num_messages, words, num_media_messages, num_links = helper.fetch_stats(selected_user, df)
 
         st.markdown(
@@ -377,8 +388,8 @@ else:
         with chart_col:
             with st.container(border=True):
                 st.subheader("Emoji Usage Distribution")
-                fig, ax = plt.subplots(figsize=(8, 8))
                 emoji_data = emoji_df.head(5)
+                fig, ax = plt.subplots(figsize=(8, 8))
                 ax.pie(
                     emoji_data['Count'],
                     labels=emoji_data['Emoji'],
@@ -399,7 +410,7 @@ st.markdown(
                 Piyush Verma Portfolio ↗
             </a>
         </div>
-        <a class="footer-source" href="#">View source code</a>
+        <a class="footer-source" href="https://github.com/PiyushVerma2026/WhatsApp-Chat-Analyzer">View source code</a>
     </div>
     """,
     unsafe_allow_html=True
