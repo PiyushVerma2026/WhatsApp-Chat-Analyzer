@@ -27,13 +27,7 @@ The project also includes [`standalone_whatsapp_analysis.ipynb`](standalone_what
 - Analyse emoji usage with counts and a chart.
 - Run the same analysis cell by cell in Jupyter.
 
-## 🖼️ Dashboard Preview
 
-Add a screenshot here when you are ready:
-
-```text
-screenshots/dashboard.png
-```
 
 ## 📁 Project Structure
 
