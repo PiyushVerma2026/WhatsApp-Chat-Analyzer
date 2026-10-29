@@ -270,6 +270,11 @@ else:
                 ax.xaxis.set_major_locator(mdates.AutoDateLocator())
                 ax.xaxis.set_major_formatter(mdates.DateFormatter('%d-%m-%Y'))
                 fig.autofmt_xdate()
+                plt.setp(
+                    ax.get_xticklabels(),
+                    rotation=90,
+                    ha='center'
+                )
                 ax.set_xlabel('Date')
                 ax.set_ylabel('Number of Messages')
                 ax.set_axisbelow(True)
