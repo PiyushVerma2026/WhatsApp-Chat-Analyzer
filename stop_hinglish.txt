@@ -286,6 +286,7 @@ got
 gotten
 greetings
 guys
+gupta
 hn
 haan
 had
@@ -819,6 +820,7 @@ sub
 such
 sup
 sure
+students,
 t
 <this
 tab
