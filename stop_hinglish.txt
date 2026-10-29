@@ -247,6 +247,7 @@ everybody
 everyone
 everything
 everywhere
+ex
 editted>
 edited>
 exactly
@@ -285,6 +286,7 @@ got
 gotten
 greetings
 guys
+hn
 haan
 had
 hadd
@@ -542,6 +544,8 @@ kuch
 kuchch
 kuchh
 kul
+kumar
+kumar/n
 kull
 kya
 kyaa
@@ -796,6 +800,8 @@ sir
 sir.
 since
 six
+singh
+singh/n
 so
 soch
 some

@@ -1,4 +1,5 @@
 # Standard library and visualization imports.
+from pathlib import Path
 import zipfile
 import streamlit as st
 import preprocessor,helper
@@ -149,13 +150,28 @@ st.markdown(
 # File upload area. Both direct text exports and ZIP exports are supported.
 with st.container(border=True):
     st.markdown('<div class="start-analysis-title">Start Your Analysis</div>', unsafe_allow_html=True)
+    demo_path = Path(__file__).with_name('demo_chat.txt')
+    use_demo = st.session_state.get('demo_chat_active', False)
+    if demo_path.exists():
+        st.markdown(
+            '<p style="color: #000000; margin-bottom: 0.35rem;">Want to try the analyzer first?</p>',
+            unsafe_allow_html=True
+        )
+        if st.button('Use demo chat'):
+            st.session_state['demo_chat_active'] = True
+            use_demo = True
+
     uploaded_file = st.file_uploader(
         "Upload a WhatsApp chat export",
         type=['txt', 'zip']
     )
 
+    if uploaded_file is not None:
+        st.session_state['demo_chat_active'] = False
+        use_demo = False
+
 # Explain how to export a chat when no file has been selected yet.
-if uploaded_file is None:
+if uploaded_file is None and not use_demo:
     st.info("Upload a WhatsApp chat ZIP or TXT file.")
 
     with st.expander("How to export a WhatsApp chat"):
@@ -177,9 +193,11 @@ if uploaded_file is None:
             5. Save or upload the `.txt` file or original `.zip` file.
             """
         )
-else:
+elif uploaded_file is not None or use_demo:
     # Read the uploaded text directly or locate the first text file in a ZIP.
-    if uploaded_file.name.lower().endswith('.zip'):
+    if use_demo:
+        data = demo_path.read_text(encoding='utf-8', errors='replace')
+    elif uploaded_file.name.lower().endswith('.zip'):
         with zipfile.ZipFile(uploaded_file) as archive:
             text_files = [
                 name for name in archive.namelist()
@@ -216,6 +234,8 @@ else:
         st.write("")
         st.write("")
         show_analysis = st.button("✨ Show Analysis", use_container_width=True)
+        if use_demo and selected_user == 'Overall':
+            show_analysis = True
 
     if show_analysis:
         # Render the complete analysis as one continuous notebook-style page.
